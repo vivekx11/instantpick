@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../main.dart';
 import '../../core/theme/app_theme.dart';
-import '../../core/config/app_config.dart';
+import '../../providers/auth_provider.dart';
 import 'otp_verification_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -69,19 +68,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: 100,
                     height: 100,
                     decoration: BoxDecoration(
-                      color: AppTheme.softPink,
-                      borderRadius: BorderRadius.circular(50),
+                      color: AppTheme.lightIndigo.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     child: const Icon(
-                      Icons.shopping_bag_outlined,
+                      Icons.store_outlined,
                       size: 50,
-                      color: AppTheme.primaryPink,
+                      color: AppTheme.primaryIndigo,
                     ),
                   ),
                 ),
                 const SizedBox(height: 32),
                 const Text(
-                  'Welcome Back!',
+                  'Shop Owner Login',
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -91,11 +90,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  'Enter your phone number to continue',
+                  'Enter your registered phone number',
                   style: TextStyle(
                     fontSize: 16,
-                    color: AppTheme.darkGrey,
-                    fontWeight: FontWeight.w300,
+                    color: AppTheme.blueGrey,
+                    fontWeight: FontWeight.w400,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -107,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: const InputDecoration(
                     labelText: 'Phone Number',
                     hintText: 'Enter 10-digit phone number',
-                    prefixIcon: Icon(Icons.phone, color: AppTheme.primaryPink),
+                    prefixIcon: Icon(Icons.phone, color: AppTheme.primaryIndigo),
                     prefixText: '+91 ',
                   ),
                 ),
@@ -121,18 +120,18 @@ class _LoginScreenState extends State<LoginScreen> {
                             padding: const EdgeInsets.all(12),
                             margin: const EdgeInsets.only(bottom: 16),
                             decoration: BoxDecoration(
-                              color: Colors.red.shade50,
+                              color: AppTheme.errorRed.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: Colors.red.shade200),
+                              border: Border.all(color: AppTheme.errorRed.withOpacity(0.3)),
                             ),
                             child: Row(
                               children: [
-                                Icon(Icons.error_outline, color: Colors.red.shade600),
+                                Icon(Icons.error_outline, color: AppTheme.errorRed),
                                 const SizedBox(width: 8),
                                 Expanded(
                                   child: Text(
                                     authProvider.error!,
-                                    style: TextStyle(color: Colors.red.shade600),
+                                    style: TextStyle(color: AppTheme.errorRed),
                                   ),
                                 ),
                               ],
@@ -165,10 +164,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const Spacer(),
                 const Text(
-                  'By continuing, you agree to our Terms of Service and Privacy Policy',
+                  'For business registration, contact admin',
                   style: TextStyle(
                     fontSize: 12,
-                    color: AppTheme.darkGrey,
+                    color: AppTheme.blueGrey,
                   ),
                   textAlign: TextAlign.center,
                 ),

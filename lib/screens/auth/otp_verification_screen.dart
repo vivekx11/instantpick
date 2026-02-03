@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import '../../main.dart';
 import '../../core/theme/app_theme.dart';
-import '../../core/config/app_config.dart';
+import '../../providers/auth_provider.dart';
 import '../home/main_screen.dart';
 
 class OTPVerificationScreen extends StatefulWidget {
@@ -53,7 +52,7 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please enter complete OTP'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.errorRed,
         ),
       );
       return;
@@ -70,27 +69,13 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
     }
   }
 
-  Future<void> _resendOTP() async {
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    await authProvider.sendOTP(widget.phoneNumber);
-    
-    if (authProvider.error == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('OTP sent successfully'),
-          backgroundColor: AppTheme.primaryPink,
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.white,
       appBar: AppBar(
         title: const Text('Verify OTP'),
-        backgroundColor: AppTheme.primaryPink,
+        backgroundColor: AppTheme.primaryIndigo,
         foregroundColor: AppTheme.white,
       ),
       body: SafeArea(
@@ -105,13 +90,13 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                   width: 80,
                   height: 80,
                   decoration: BoxDecoration(
-                    color: AppTheme.softPink,
-                    borderRadius: BorderRadius.circular(40),
+                    color: AppTheme.lightIndigo.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(16),
                   ),
                   child: const Icon(
                     Icons.sms_outlined,
                     size: 40,
-                    color: AppTheme.primaryPink,
+                    color: AppTheme.primaryIndigo,
                   ),
                 ),
               ),
@@ -130,8 +115,8 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                 'We sent a 6-digit code to ${widget.phoneNumber}',
                 style: const TextStyle(
                   fontSize: 16,
-                  color: AppTheme.darkGrey,
-                  fontWeight: FontWeight.w300,
+                  color: AppTheme.blueGrey,
+                  fontWeight: FontWeight.w400,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -157,13 +142,13 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                         filled: true,
                         fillColor: AppTheme.lightGrey,
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide.none,
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(8),
                           borderSide: const BorderSide(
-                            color: AppTheme.primaryPink,
+                            color: AppTheme.primaryIndigo,
                             width: 2,
                           ),
                         ),
@@ -186,18 +171,18 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                           padding: const EdgeInsets.all(12),
                           margin: const EdgeInsets.only(bottom: 16),
                           decoration: BoxDecoration(
-                            color: Colors.red.shade50,
+                            color: AppTheme.errorRed.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.red.shade200),
+                            border: Border.all(color: AppTheme.errorRed.withOpacity(0.3)),
                           ),
                           child: Row(
                             children: [
-                              Icon(Icons.error_outline, color: Colors.red.shade600),
+                              Icon(Icons.error_outline, color: AppTheme.errorRed),
                               const SizedBox(width: 8),
                               Expanded(
                                 child: Text(
                                   authProvider.error!,
-                                  style: TextStyle(color: Colors.red.shade600),
+                                  style: TextStyle(color: AppTheme.errorRed),
                                 ),
                               ),
                             ],
@@ -227,26 +212,6 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                     ],
                   );
                 },
-              ),
-              const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Didn't receive the code? ",
-                    style: TextStyle(color: AppTheme.darkGrey),
-                  ),
-                  TextButton(
-                    onPressed: _resendOTP,
-                    child: const Text(
-                      'Resend',
-                      style: TextStyle(
-                        color: AppTheme.primaryPink,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ],
               ),
             ],
           ),

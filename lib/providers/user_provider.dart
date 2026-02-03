@@ -15,7 +15,7 @@ class UserProvider extends ChangeNotifier {
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      _username = prefs.getString('username');
+      _username = prefs.getString('shop_owner_username');
     } catch (e) {
       print('Error loading username: $e');
     } finally {
@@ -27,7 +27,7 @@ class UserProvider extends ChangeNotifier {
   Future<void> saveUsername(String username) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('username', username);
+      await prefs.setString('shop_owner_username', username);
       _username = username;
       notifyListeners();
     } catch (e) {
@@ -39,7 +39,7 @@ class UserProvider extends ChangeNotifier {
   Future<void> clearUsername() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.remove('username');
+      await prefs.remove('shop_owner_username');
       _username = null;
       notifyListeners();
     } catch (e) {

@@ -23,13 +23,13 @@ class _UsernameSetupScreenState extends State<UsernameSetupScreen> {
 
   String? _validateUsername(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter your name';
+      return 'Please enter your shop name';
     }
     if (value.length < 2) {
-      return 'Name must be at least 2 characters';
+      return 'Shop name must be at least 2 characters';
     }
-    if (value.length > 30) {
-      return 'Name must be less than 30 characters';
+    if (value.length > 50) {
+      return 'Shop name must be less than 50 characters';
     }
     return null;
   }
@@ -77,19 +77,19 @@ class _UsernameSetupScreenState extends State<UsernameSetupScreen> {
                     width: 100,
                     height: 100,
                     decoration: BoxDecoration(
-                      color: AppTheme.softPink,
+                      color: AppTheme.softBlue,
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: const Icon(
-                      Icons.person_add_outlined,
+                      Icons.store_outlined,
                       size: 50,
-                      color: AppTheme.primaryPink,
+                      color: AppTheme.primaryBlue,
                     ),
                   ),
                 ),
                 const SizedBox(height: 32),
                 const Text(
-                  'Welcome!',
+                  'Welcome Shop Owner!',
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -99,7 +99,7 @@ class _UsernameSetupScreenState extends State<UsernameSetupScreen> {
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  'Please enter your name to get started',
+                  'Please enter your shop name to get started',
                   style: TextStyle(
                     fontSize: 16,
                     color: AppTheme.darkGrey,
@@ -113,9 +113,9 @@ class _UsernameSetupScreenState extends State<UsernameSetupScreen> {
                   validator: _validateUsername,
                   textCapitalization: TextCapitalization.words,
                   decoration: const InputDecoration(
-                    labelText: 'Your Name',
-                    hintText: 'Enter your name',
-                    prefixIcon: Icon(Icons.person, color: AppTheme.primaryPink),
+                    labelText: 'Shop Name',
+                    hintText: 'Enter your shop name',
+                    prefixIcon: Icon(Icons.store, color: AppTheme.primaryBlue),
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -146,7 +146,7 @@ class _UsernameSetupScreenState extends State<UsernameSetupScreen> {
                 ),
                 const Spacer(),
                 const Text(
-                  'You can change your name later in settings',
+                  'You can change your shop name later in settings',
                   style: TextStyle(
                     fontSize: 12,
                     color: AppTheme.darkGrey,

@@ -66,7 +66,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '448618578101',
     projectId: 'local-marketplace-demo',
     storageBucket: 'local-marketplace-demo.appspot.com',
-    iosBundleId: 'com.example.userApp',
+    iosBundleId: 'com.example.shopOwnerApp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -75,6 +75,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '448618578101',
     projectId: 'local-marketplace-demo',
     storageBucket: 'local-marketplace-demo.appspot.com',
-    iosBundleId: 'com.example.userApp',
+    iosBundleId: 'com.example.shopOwnerApp',
   );
 }

@@ -1,30 +1,38 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 
-class OrdersScreen extends StatelessWidget {
-  const OrdersScreen({super.key});
+class ProductsScreen extends StatelessWidget {
+  const ProductsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.lightGrey,
       appBar: AppBar(
-        title: const Text('Orders'),
+        title: const Text('My Products'),
         backgroundColor: AppTheme.primaryIndigo,
         foregroundColor: AppTheme.white,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              // TODO: Navigate to add product
+            },
+          ),
+        ],
       ),
       body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              Icons.receipt_long_outlined,
+              Icons.inventory_outlined,
               size: 80,
               color: AppTheme.lightIndigo,
             ),
             SizedBox(height: 16),
             Text(
-              'No orders yet',
+              'No products yet',
               style: TextStyle(
                 fontSize: 18,
                 color: AppTheme.darkGrey,
@@ -33,7 +41,7 @@ class OrdersScreen extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              'Orders from customers will appear here',
+              'Add your first product to get started',
               style: TextStyle(
                 fontSize: 14,
                 color: AppTheme.blueGrey,
@@ -41,6 +49,13 @@ class OrdersScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // TODO: Navigate to add product
+        },
+        backgroundColor: AppTheme.primaryIndigo,
+        child: const Icon(Icons.add, color: AppTheme.white),
       ),
     );
   }

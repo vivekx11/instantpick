@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../core/constants/app_constants.dart';
 
 class ApiService {
   static final ApiService _instance = ApiService._internal();
   factory ApiService() => _instance;
   ApiService._internal();
 
+  static const String baseUrl = 'http://localhost:3000/api';
   String? _authToken;
 
   void setAuthToken(String token) {
@@ -30,7 +30,7 @@ class ApiService {
   Future<Map<String, dynamic>> get(String endpoint) async {
     try {
       final response = await http.get(
-        Uri.parse('${AppConstants.baseUrl}$endpoint'),
+        Uri.parse('$baseUrl$endpoint'),
         headers: _headers,
       );
       return _handleResponse(response);
@@ -42,7 +42,7 @@ class ApiService {
   Future<Map<String, dynamic>> post(String endpoint, Map<String, dynamic> data) async {
     try {
       final response = await http.post(
-        Uri.parse('${AppConstants.baseUrl}$endpoint'),
+        Uri.parse('$baseUrl$endpoint'),
         headers: _headers,
         body: jsonEncode(data),
       );
@@ -55,7 +55,7 @@ class ApiService {
   Future<Map<String, dynamic>> put(String endpoint, Map<String, dynamic> data) async {
     try {
       final response = await http.put(
-        Uri.parse('${AppConstants.baseUrl}$endpoint'),
+        Uri.parse('$baseUrl$endpoint'),
         headers: _headers,
         body: jsonEncode(data),
       );
@@ -68,7 +68,7 @@ class ApiService {
   Future<Map<String, dynamic>> delete(String endpoint) async {
     try {
       final response = await http.delete(
-        Uri.parse('${AppConstants.baseUrl}$endpoint'),
+        Uri.parse('$baseUrl$endpoint'),
         headers: _headers,
       );
       return _handleResponse(response);

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/theme/app_theme.dart';
-import '../../providers/user_provider.dart';
-import '../auth/username_setup_screen.dart';
+import '../../providers/auth_provider.dart';
+import '../auth/login_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -10,126 +10,133 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.white,
+      backgroundColor: AppTheme.lightGrey,
       appBar: AppBar(
         title: const Text('Profile'),
-        backgroundColor: AppTheme.primaryPink,
+        backgroundColor: AppTheme.primaryIndigo,
         foregroundColor: AppTheme.white,
       ),
-      body: Consumer<UserProvider>(
-        builder: (context, userProvider, child) {
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                // Profile Header
-                Container(
-                  width: double.infinity,
-                  color: AppTheme.primaryPink,
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          color: AppTheme.white,
-                          borderRadius: BorderRadius.circular(40),
-                        ),
-                        child: const Icon(
-                          Icons.person,
-                          size: 40,
-                          color: AppTheme.primaryPink,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        userProvider.username ?? 'Welcome User!',
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme.white,
-                        ),
-                      ),
-                      const Text(
-                        'Local Marketplace Customer',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: AppTheme.white,
-                        ),
-                      ),
-                    ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Profile Header
+            Container(
+              width: double.infinity,
+              color: AppTheme.primaryIndigo,
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                children: [
+                  Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: AppTheme.white,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: const Icon(
+                      Icons.store,
+                      size: 40,
+                      color: AppTheme.primaryIndigo,
+                    ),
                   ),
-                ),
-                
-                // Profile Options
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      _buildProfileOption(
-                        icon: Icons.person_outline,
-                        title: 'Change Name',
-                        onTap: () {
-                          _showEditNameDialog(context, userProvider);
-                        },
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Shop Owner',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.white,
+                    ),
+                  ),
+                  const Text(
+                    '+91 9876543210',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppTheme.white,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppTheme.successGreen,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Text(
+                      'Approved',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppTheme.white,
+                        fontWeight: FontWeight.w500,
                       ),
-                      _buildProfileOption(
-                        icon: Icons.location_on_outlined,
-                        title: 'Manage Addresses',
-                        onTap: () {
-                          // TODO: Navigate to addresses
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Feature coming soon!')),
-                          );
-                        },
-                      ),
-                      _buildProfileOption(
-                        icon: Icons.notifications_outlined,
-                        title: 'Notifications',
-                        onTap: () {
-                          // TODO: Navigate to notifications settings
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Feature coming soon!')),
-                          );
-                        },
-                      ),
-                      _buildProfileOption(
-                        icon: Icons.help_outline,
-                        title: 'Help & Support',
-                        onTap: () {
-                          // TODO: Navigate to help
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Feature coming soon!')),
-                          );
-                        },
-                      ),
-                      _buildProfileOption(
-                        icon: Icons.info_outline,
-                        title: 'About',
-                        onTap: () {
-                          _showAboutDialog(context);
-                        },
-                      ),
-                      const SizedBox(height: 24),
-                      SizedBox(
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            
+            // Profile Options
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  _buildProfileOption(
+                    icon: Icons.store_outlined,
+                    title: 'Shop Details',
+                    onTap: () {
+                      // TODO: Navigate to shop details
+                    },
+                  ),
+                  _buildProfileOption(
+                    icon: Icons.person_outline,
+                    title: 'Edit Profile',
+                    onTap: () {
+                      // TODO: Navigate to edit profile
+                    },
+                  ),
+                  _buildProfileOption(
+                    icon: Icons.analytics_outlined,
+                    title: 'Sales Analytics',
+                    onTap: () {
+                      // TODO: Navigate to analytics
+                    },
+                  ),
+                  _buildProfileOption(
+                    icon: Icons.settings_outlined,
+                    title: 'Settings',
+                    onTap: () {
+                      // TODO: Navigate to settings
+                    },
+                  ),
+                  _buildProfileOption(
+                    icon: Icons.help_outline,
+                    title: 'Help & Support',
+                    onTap: () {
+                      // TODO: Navigate to help
+                    },
+                  ),
+                  const SizedBox(height: 24),
+                  Consumer<AuthProvider>(
+                    builder: (context, authProvider, child) {
+                      return SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: userProvider.isLoading ? null : () async {
-                            await userProvider.clearUsername();
+                          onPressed: authProvider.isLoading ? null : () async {
+                            await authProvider.logout();
                             if (context.mounted) {
                               Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
-                                  builder: (context) => const UsernameSetupScreen(),
+                                  builder: (context) => const LoginScreen(),
                                 ),
                                 (route) => false,
                               );
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
+                            backgroundColor: AppTheme.errorRed,
                             foregroundColor: AppTheme.white,
                           ),
-                          child: userProvider.isLoading
+                          child: authProvider.isLoading
                               ? const SizedBox(
                                   height: 20,
                                   width: 20,
@@ -141,21 +148,21 @@ class ProfileScreen extends StatelessWidget {
                                   ),
                                 )
                               : const Text(
-                                  'Reset App',
+                                  'Logout',
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
                         ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          );
-        },
+          ],
+        ),
       ),
     );
   }
@@ -168,7 +175,7 @@ class ProfileScreen extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
       child: ListTile(
-        leading: Icon(icon, color: AppTheme.primaryPink),
+        leading: Icon(icon, color: AppTheme.primaryIndigo),
         title: Text(
           title,
           style: const TextStyle(
@@ -180,98 +187,9 @@ class ProfileScreen extends StatelessWidget {
         trailing: const Icon(
           Icons.arrow_forward_ios,
           size: 16,
-          color: AppTheme.darkGrey,
+          color: AppTheme.blueGrey,
         ),
         onTap: onTap,
-      ),
-    );
-  }
-
-  void _showEditNameDialog(BuildContext context, UserProvider userProvider) {
-    final nameController = TextEditingController(text: userProvider.username ?? '');
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Change Name'),
-        content: TextField(
-          controller: nameController,
-          decoration: const InputDecoration(
-            labelText: 'Your Name',
-            border: OutlineInputBorder(),
-          ),
-          textCapitalization: TextCapitalization.words,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              final newName = nameController.text.trim();
-              if (newName.isEmpty) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Name cannot be empty'),
-                    backgroundColor: Colors.red,
-                  ),
-                );
-                return;
-              }
-
-              try {
-                await userProvider.saveUsername(newName);
-                
-                if (context.mounted) {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Name updated successfully'),
-                      backgroundColor: AppTheme.primaryPink,
-                    ),
-                  );
-                }
-              } catch (e) {
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Failed to update name: $e'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
-              }
-            },
-            child: const Text('Save'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showAboutDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('About'),
-        content: const Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Local Marketplace v1.0.0'),
-            SizedBox(height: 16),
-            Text('A local marketplace app for customers to browse and purchase from local shops.'),
-            SizedBox(height: 16),
-            Text('No login required - just enter your name and start shopping!'),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
-          ),
-        ],
       ),
     );
   }

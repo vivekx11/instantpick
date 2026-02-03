@@ -46,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.primaryPink,
+      backgroundColor: AppTheme.primaryIndigo,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -56,24 +56,24 @@ class _SplashScreenState extends State<SplashScreen> {
               height: 120,
               decoration: BoxDecoration(
                 color: AppTheme.white,
-                borderRadius: BorderRadius.circular(60),
+                borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: AppTheme.lightPink.withOpacity(0.3),
+                    color: AppTheme.darkIndigo.withOpacity(0.3),
                     blurRadius: 20,
                     offset: const Offset(0, 10),
                   ),
                 ],
               ),
               child: const Icon(
-                Icons.shopping_bag,
+                Icons.store,
                 size: 60,
-                color: AppTheme.primaryPink,
+                color: AppTheme.primaryIndigo,
               ),
             ),
             const SizedBox(height: 32),
             const Text(
-              'Local Marketplace',
+              'Shop Owner Dashboard',
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
@@ -82,7 +82,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             const SizedBox(height: 8),
             const Text(
-              'Shop Local, Shop Easy',
+              'Manage Your Business',
               style: TextStyle(
                 fontSize: 16,
                 color: AppTheme.white,
