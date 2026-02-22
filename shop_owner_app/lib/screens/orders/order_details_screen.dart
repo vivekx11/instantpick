@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../core/theme/app_theme.dart';
 import '../../models/order_model.dart';
+import '../../utils/date_utils.dart' as app_date_utils;
 
 class OrderDetailsScreen extends StatelessWidget {
   final OrderModel order;
@@ -85,13 +86,6 @@ class OrderDetailsScreen extends StatelessWidget {
                   _buildOrderItemsCard(),
 
                   const SizedBox(height: 16),
-
-                  // Pickup PIN (Only show for Accepted orders)
-                  if (order.status == 'Accepted')
-                    _buildPickupPinCard(context),
-
-                  if (order.status == 'Accepted')
-                    const SizedBox(height: 16),
 
                   // Notes (if any)
                   if (order.notes != null && order.notes!.isNotEmpty)
@@ -499,13 +493,6 @@ class OrderDetailsScreen extends StatelessWidget {
   }
 
   String _formatDateTime(DateTime dateTime) {
-    final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    final day = dateTime.day;
-    final month = months[dateTime.month - 1];
-    final year = dateTime.year;
-    final hour = dateTime.hour.toString().padLeft(2, '0');
-    final minute = dateTime.minute.toString().padLeft(2, '0');
-    
-    return '$day $month $year, $hour:$minute';
+    return app_date_utils.DateTimeUtils.formatToIST12Hour(dateTime);
   }
 }

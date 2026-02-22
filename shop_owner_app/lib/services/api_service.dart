@@ -7,9 +7,7 @@ class ApiService {
   factory ApiService() => _instance;
   ApiService._internal();
 
-  // ============================================
-  // 🌐 PRODUCTION URL - RENDER.COM
-  // ============================================
+  // Production Backend URL (Render)
   static const String baseUrl = 'https://instantpick-backend.onrender.com/api';
   
   String? _authToken;

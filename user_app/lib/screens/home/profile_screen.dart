@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/theme/app_theme.dart';
 import '../../providers/user_provider.dart';
 import '../../services/google_auth_service.dart';
 import '../auth/google_login_screen.dart';
+import '../location/user_location_setup_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -108,6 +110,24 @@ class ProfileScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     children: [
+                      FutureBuilder<String>(
+                        future: _getUserAddress(),
+                        builder: (context, snapshot) {
+                          return _buildProfileOption(
+                            icon: Icons.location_on,
+                            title: 'My Delivery Location',
+                            subtitle: snapshot.data ?? 'Not set',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const UserLocationSetupScreen(),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
                       _buildProfileOption(
                         icon: Icons.person_outline,
                         title: 'Change Name',
@@ -170,6 +190,15 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
+  Future<String> _getUserAddress() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getString('userAddress') ?? 'Not set';
+    } catch (e) {
+      return 'Not set';
+    }
+  }
+
   void _showLogoutDialog(BuildContext context, UserProvider userProvider) {
     showDialog(
       context: context,
@@ -207,6 +236,7 @@ class ProfileScreen extends StatelessWidget {
   Widget _buildProfileOption({
     required IconData icon,
     required String title,
+    String? subtitle,
     required VoidCallback onTap,
   }) {
     return Card(
@@ -221,6 +251,14 @@ class ProfileScreen extends StatelessWidget {
             color: AppTheme.darkGrey,
           ),
         ),
+        subtitle: subtitle != null
+            ? Text(
+                subtitle,
+                style: const TextStyle(fontSize: 12, color: Colors.grey),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              )
+            : null,
         trailing: const Icon(
           Icons.arrow_forward_ios,
           size: 16,

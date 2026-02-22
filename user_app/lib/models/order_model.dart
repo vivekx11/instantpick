@@ -14,6 +14,8 @@ class Order {
   final String shopId;
   final String shopName;
   final String shopAddress;
+  final double? shopLatitude;
+  final double? shopLongitude;
   final List<OrderItem> items;
   final double totalAmount;
   final String pickupPin; // 4-digit PIN
@@ -31,6 +33,8 @@ class Order {
     required this.shopId,
     required this.shopName,
     required this.shopAddress,
+    this.shopLatitude,
+    this.shopLongitude,
     required this.items,
     required this.totalAmount,
     required this.pickupPin,
@@ -50,6 +54,8 @@ class Order {
       shopId: json['shopId'] is Map ? json['shopId']['_id'] : json['shopId'] ?? '',
       shopName: json['shopName'] ?? '',
       shopAddress: json['shopAddress'] ?? '',
+      shopLatitude: json['shopLatitude']?.toDouble(),
+      shopLongitude: json['shopLongitude']?.toDouble(),
       items: (json['items'] as List? ?? [])
           .map((item) => OrderItem.fromJson(item))
           .toList(),
@@ -93,6 +99,8 @@ class Order {
       'shopId': shopId,
       'shopName': shopName,
       'shopAddress': shopAddress,
+      'shopLatitude': shopLatitude,
+      'shopLongitude': shopLongitude,
       'items': items.map((item) => item.toJson()).toList(),
       'totalAmount': totalAmount,
       'pickupPin': pickupPin,

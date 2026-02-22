@@ -5,6 +5,7 @@ import '../../providers/shop_provider.dart';
 import '../../services/simple_auth_service.dart';
 import '../../services/google_auth_service.dart';
 import '../auth/phone_login_screen.dart';
+import '../location/shop_location_setup_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -225,7 +226,19 @@ class ProfileScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     children: [
-                      if (shop != null)
+                      if (shop != null) ...[
+                        _buildProfileOption(
+                          icon: Icons.location_on,
+                          title: 'Setup Shop Location',
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ShopLocationSetupScreen(),
+                              ),
+                            );
+                          },
+                        ),
                         _buildProfileOption(
                           icon: Icons.edit,
                           title: 'Edit Shop Details',
@@ -235,6 +248,7 @@ class ProfileScreen extends StatelessWidget {
                             );
                           },
                         ),
+                      ],
                       _buildProfileOption(
                         icon: Icons.help_outline,
                         title: 'Help & Support',

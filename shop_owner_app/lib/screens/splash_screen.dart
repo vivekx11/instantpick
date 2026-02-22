@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../core/theme/app_theme.dart';
 import '../providers/user_provider.dart';
 import '../providers/shop_provider.dart';
 import '../services/simple_auth_service.dart';
 import 'auth/phone_login_screen.dart';
 import 'home/main_screen.dart';
+import 'location/shop_location_setup_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -35,12 +37,12 @@ class _SplashScreenState extends State<SplashScreen> {
       final data = await simpleAuthService.loadSavedAuth();
       
       if (data != null && data['owner'] != null && data['shopId'] != null) {
-        // Profile is complete, go to main screen
+        // Profile is complete, set user and shop
         userProvider.setUser(data['owner']);
         shopProvider.setShopId(data['shopId']);
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const MainScreen()),
-        );
+        
+        // Check if shop has set location
+        await _checkShopLocation(data['shopId']);
       } else {
         // No saved data, go to login
         Navigator.of(context).pushReplacement(
@@ -50,6 +52,33 @@ class _SplashScreenState extends State<SplashScreen> {
     } catch (e) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const PhoneLoginScreen()),
+      );
+    }
+  }
+
+  Future<void> _checkShopLocation(String shopId) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final hasLocation = prefs.getBool('shopLocationSet') ?? false;
+      
+      if (!mounted) return;
+      
+      if (!hasLocation) {
+        // Force shop owner to set location first
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const ShopLocationSetupScreen(isFirstTime: true),
+          ),
+        );
+      } else {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const MainScreen()),
+        );
+      }
+    } catch (e) {
+      // If error, go to main screen
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const MainScreen()),
       );
     }
   }

@@ -180,8 +180,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Owner Info Card
+                  _buildOwnerInfoCard(context),
+
+                  const SizedBox(height: 16),
+
                   // Stats Cards
                   _buildStatsGrid(orders, pendingOrders, totalRevenue, products),
+
+                  const SizedBox(height: 24),
+
+                  // Quick Actions
+                  const Text(
+                    'Quick Actions',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.darkGrey,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  _buildActionsGrid(context),
 
                   const SizedBox(height: 24),
 
@@ -217,34 +236,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       : products.isEmpty
                           ? _buildEmptyProducts()
                           : _buildProductsGrid(products, productProvider),
-
-                  const SizedBox(height: 24),
-
-                  // Sales Visualization
-                  const Text(
-                    'Recent Sales Trend',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: AppTheme.darkGrey,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  _buildSalesChart(orders),
-
-                  const SizedBox(height: 24),
-
-                  // Quick Actions
-                  const Text(
-                    'Quick Actions',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: AppTheme.darkGrey,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  _buildActionsGrid(context),
                 ],
               ),
             ),
@@ -276,32 +267,115 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildSalesChart(List<dynamic> orders) {
-    return Container(
-      height: 180,
-      padding: const EdgeInsets.only(top: 24, right: 24, left: 12, bottom: 12),
-      decoration: BoxDecoration(
-        color: AppTheme.white,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: LineChart(
-        LineChartData(
-          gridData: const FlGridData(show: false),
-          titlesData: const FlTitlesData(show: false),
-          borderData: FlBorderData(show: false),
-          lineBarsData: [
-            LineChartBarData(
-              spots: orders.isEmpty 
-                ? [const FlSpot(0, 0)] 
-                : orders.reversed.toList().asMap().entries.map((e) => FlSpot(e.key.toDouble(), e.value.totalAmount)).toList(),
-              isCurved: true,
-              color: AppTheme.primaryIndigo,
-              barWidth: 4,
-              isStrokeCapRound: true,
-              dotData: const FlDotData(show: false),
-              belowBarData: BarAreaData(
-                show: true,
-                color: AppTheme.primaryIndigo.withOpacity(0.1),
+  Widget _buildOwnerInfoCard(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final shopProvider = Provider.of<ShopProvider>(context, listen: false);
+    final user = authProvider.user;
+    final shop = shopProvider.currentShop;
+    
+    final ownerName = user?['name'] ?? 'Shop Owner';
+    final shopName = shop?['name'] ?? 'My Shop';
+    final ownerEmail = user?['email'] ?? shop?['phone'] ?? '';
+    
+    return Card(
+      elevation: 3,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              AppTheme.primaryIndigo,
+              AppTheme.primaryIndigo.withOpacity(0.8),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Row(
+          children: [
+            // Avatar
+            Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                color: AppTheme.white,
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Center(
+                child: Text(
+                  ownerName.isNotEmpty ? ownerName[0].toUpperCase() : 'S',
+                  style: const TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.primaryIndigo,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+            // Info
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    ownerName,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.white,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  if (ownerEmail.isNotEmpty)
+                    Text(
+                      ownerEmail,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: AppTheme.white.withOpacity(0.9),
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      const Icon(Icons.store, size: 14, color: AppTheme.white),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          shopName,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: AppTheme.white.withOpacity(0.9),
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            // Shop Status Toggle
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: (shop?['isActive'] ?? false) ? AppTheme.successGreen : AppTheme.errorRed,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                (shop?['isActive'] ?? false) ? 'Open' : 'Closed',
+                style: const TextStyle(
+                  color: AppTheme.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],

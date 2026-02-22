@@ -106,6 +106,37 @@ class ShopProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> updateShopLocation(double latitude, double longitude, double deliveryRadius) async {
+    if (_currentShop == null) {
+      throw Exception('No shop loaded. Please create a shop first.');
+    }
+
+    final shopId = _currentShop!['_id'] ?? _currentShop!['id'];
+    if (shopId == null) {
+      throw Exception('Shop ID not found. Please try again.');
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      final updatedShop = await _shopApiService.updateShopLocation(
+        shopId.toString(),
+        latitude,
+        longitude,
+        deliveryRadius,
+      );
+      _currentShop = updatedShop;
+      notifyListeners();
+    } catch (e) {
+      print('Error updating shop location: $e');
+      setError(e.toString());
+      rethrow;
+    } finally {
+      setLoading(false);
+    }
+  }
+
   void clearShop() {
     _currentShop = null;
     _shopId = null;

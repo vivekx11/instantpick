@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/theme/app_theme.dart';
 import '../../providers/product_provider.dart';
 import '../../providers/cart_provider.dart';
 import '../../services/network_service.dart';
 import '../../services/notification_service.dart';
+import '../../services/location_service.dart';
 import '../../widgets/shimmer_loading.dart';
 import '../../models/product_model.dart';
 import '../shops/shops_screen.dart';
 import 'notifications_screen.dart';
+import '../maps/nearby_shops_map_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -43,6 +46,30 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _loadProducts() async {
     if (!mounted) return;
+    
+    // Try to load nearby products based on user location
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final lat = prefs.getDouble('userLatitude');
+      final lng = prefs.getDouble('userLongitude');
+      
+      if (lat != null && lng != null) {
+        // User has set location, fetch nearby shops first
+        final locationService = LocationService();
+        final nearbyShops = await locationService.getDeliverableShops(
+          latitude: lat,
+          longitude: lng,
+        );
+        
+        // If we have nearby shops, we could filter products by those shops
+        // For now, just load all products
+        print('Found ${nearbyShops.length} nearby shops');
+      }
+    } catch (e) {
+      print('Error loading nearby shops: $e');
+    }
+    
+    // Load all products
     await Provider.of<ProductProvider>(context, listen: false).loadProducts();
   }
 
@@ -81,6 +108,18 @@ class _HomeScreenState extends State<HomeScreen> {
         foregroundColor: AppTheme.darkGrey,
         elevation: 0,
         actions: [
+          // Map Icon
+          IconButton(
+            icon: const Icon(Icons.map_outlined, color: AppTheme.white),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NearbyShopsMapScreen(),
+                ),
+              );
+            },
+          ),
           // Notification Bell Icon
           Stack(
             children: [

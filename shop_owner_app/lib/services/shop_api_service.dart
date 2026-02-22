@@ -102,4 +102,27 @@ class ShopApiService {
       throw Exception('Failed to load shops: $e');
     }
   }
+
+  // Update shop location
+  Future<Map<String, dynamic>> updateShopLocation(
+    String shopId,
+    double latitude,
+    double longitude,
+    double deliveryRadius,
+  ) async {
+    try {
+      final response = await _apiService.post('/location/shop/location', {
+        'shopId': shopId,
+        'latitude': latitude,
+        'longitude': longitude,
+        'deliveryRadius': deliveryRadius,
+      });
+      if (response['success'] == true) {
+        return response['data'];
+      }
+      throw Exception(response['message'] ?? 'Failed to update location');
+    } catch (e) {
+      throw Exception('Failed to update location: $e');
+    }
+  }
 }

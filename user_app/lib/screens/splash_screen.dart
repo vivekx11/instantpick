@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../core/theme/app_theme.dart';
 import '../providers/auth_provider.dart';
 import '../services/google_auth_service.dart';
 import 'auth/google_login_screen.dart';
 import 'home/main_screen.dart';
+import 'location/user_location_setup_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -35,9 +37,9 @@ class _SplashScreenState extends State<SplashScreen> {
       
       if (user != null) {
         authProvider.setUser(user);
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const MainScreen()),
-        );
+        
+        // Check if user has set location
+        await _checkUserLocation(user.id);
       } else {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const GoogleLoginScreen()),
@@ -46,6 +48,33 @@ class _SplashScreenState extends State<SplashScreen> {
     } catch (e) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const GoogleLoginScreen()),
+      );
+    }
+  }
+
+  Future<void> _checkUserLocation(String userId) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final hasLocation = prefs.getBool('userLocationSet') ?? false;
+      
+      if (!mounted) return;
+      
+      if (!hasLocation) {
+        // Force user to set location first
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const UserLocationSetupScreen(isFirstTime: true),
+          ),
+        );
+      } else {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const MainScreen()),
+        );
+      }
+    } catch (e) {
+      // If error, go to main screen
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const MainScreen()),
       );
     }
   }

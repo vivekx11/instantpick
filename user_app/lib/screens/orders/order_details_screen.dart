@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../core/theme/app_theme.dart';
 import '../../models/order_model.dart';
 import '../../utils/date_utils.dart';
+import '../orders/order_pickup_screen.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
   final Order order;
@@ -65,6 +67,25 @@ class OrderDetailsScreen extends StatelessWidget {
                     _buildSectionTitle('Pickup Code'),
                     const SizedBox(height: 12),
                     _buildPickupCodeCard(),
+                    const SizedBox(height: 16),
+                    
+                    // Get Directions Button
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        onPressed: () => _openDirections(context),
+                        icon: const Icon(Icons.directions),
+                        label: const Text('Get Directions to Shop'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppTheme.primaryPink,
+                          foregroundColor: AppTheme.white,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 24),
                   ],
 
@@ -445,5 +466,19 @@ class OrderDetailsScreen extends StatelessWidget {
 
   String _formatDateTime(DateTime date) {
     return DateTimeUtils.formatToIST12Hour(date);
+  }
+
+  void _openDirections(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => OrderPickupScreen(
+          shopName: order.shopName,
+          shopAddress: order.shopAddress,
+          shopLatitude: order.shopLatitude ?? 0.0,
+          shopLongitude: order.shopLongitude ?? 0.0,
+        ),
+      ),
+    );
   }
 }
