@@ -2,7 +2,7 @@
   MARKETPLACE SYSTEM - FINAL STATUS
 ═══════════════════════════════════════════════════════════════
 
-✅ SHOP OWNER APP - COMPLETE
+✅ SHOP OWNER APP -- COMPLETE
   ✓ Shop registration with full details
   ✓ Product upload with Firebase images
   ✓ Order management (pending/accepted/completed)
