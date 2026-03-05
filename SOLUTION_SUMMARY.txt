@@ -6,7 +6,7 @@ PROBLEM:
   Your app uses localhost:3001 which only works on the same computer.
   You want it to work on ANY device, ANY network.
 
-SOLUTION OPTIONS:
+SOLUTION OPTIONS:-
 
 ┌─────────────────────────────────────────────────────────────┐
 │ OPTION 1: ngrok (FASTEST - 5 minutes)                      │
